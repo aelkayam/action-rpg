@@ -1,6 +1,6 @@
 extends Node2D
 
-var GrassEffect = preload("res://Effects/GrassEffect.tscn")
+const GrassEffect = preload("res://Effects/GrassEffect.tscn")
 onready var stats: Node = $Stats
 
 

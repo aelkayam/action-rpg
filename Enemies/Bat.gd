@@ -1,12 +1,19 @@
 extends KinematicBody2D
 
+const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
+
 export var FRICTION = 200
 export var KNOCKBACK_VELOCITY = 120
 export var KNOCKBACK_ACCELERATION = 700
 
+onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 onready var stats: Node = $Stats
 
 var knockback := Vector2.ZERO
+
+
+func _ready() -> void:
+	animated_sprite.playing = true
 
 
 func _physics_process(delta: float) -> void:
@@ -26,4 +33,9 @@ func _on_no_health() -> void:
 
 
 func die() -> void:
+#	instancing death effect:
+	var deathEffect = EnemyDeathEffect.instance()
+	get_parent().add_child(deathEffect)
+	deathEffect.position = position
+	deathEffect.offset = Vector2(0, -8)
 	queue_free()

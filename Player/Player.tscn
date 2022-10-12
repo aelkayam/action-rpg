@@ -22,7 +22,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0 ]
+"values": [ 18 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("HitBoxPivot:rotation_degrees")
@@ -34,7 +34,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ -90.0 ]
+"values": [ 0.0 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("HitBoxPivot/SwordHitbox/CollisionShape2D:disabled")
@@ -760,7 +760,7 @@ states/Run/node = SubResource( 23 )
 states/Run/position = Vector2( 889, 167 )
 transitions = [ "Idle", "Run", SubResource( 24 ), "Run", "Idle", SubResource( 25 ), "Idle", "Attack", SubResource( 36 ), "Attack", "Idle", SubResource( 37 ), "Idle", "Roll", SubResource( 48 ), "Roll", "Idle", SubResource( 49 ), "Roll", "Attack", SubResource( 51 ), "Attack", "Roll", SubResource( 52 ) ]
 start_node = "Idle"
-graph_offset = Vector2( 114.469, 28 )
+graph_offset = Vector2( 120.469, -43 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=18]
 
@@ -779,6 +779,7 @@ script = ExtResource( 1 )
 position = Vector2( 0, -9 )
 texture = ExtResource( 2 )
 hframes = 60
+frame = 18
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = -1.5708
@@ -806,15 +807,15 @@ anims/run_up = SubResource( 5 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 17 )
 anim_player = NodePath("../AnimationPlayer")
+active = true
 parameters/playback = SubResource( 18 )
-parameters/Attack/blend_position = Vector2( 0.477977, 0.478704 )
-parameters/Idle/blend_position = Vector2( 0, 0 )
-parameters/Roll/blend_position = Vector2( -0.0081566, 0.244444 )
-parameters/Run/blend_position = Vector2( 0, 0 )
+parameters/Attack/blend_position = Vector2( 0, 1 )
+parameters/Idle/blend_position = Vector2( 0, 1 )
+parameters/Roll/blend_position = Vector2( 0, 1 )
+parameters/Run/blend_position = Vector2( 0, 1 )
 
 [node name="HitBoxPivot" type="Position2D" parent="."]
 position = Vector2( 0, -4 )
-rotation = -1.5708
 
 [node name="SwordHitbox" parent="HitBoxPivot" instance=ExtResource( 3 )]
 collision_mask = 8

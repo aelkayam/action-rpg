@@ -9,7 +9,7 @@ export var FRICTION = 500
 enum PlayerState { MOVE, ROLL, ATTACK }
 
 var velocity: Vector2 = Vector2.ZERO
-var roll_vector = Vector2.RIGHT
+var roll_vector = Vector2.DOWN
 var state = PlayerState.MOVE
 
 onready var anim_player: AnimationPlayer = $AnimationPlayer
