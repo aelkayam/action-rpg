@@ -1,10 +1,10 @@
 extends KinematicBody2D
 
-const MAX_SPEED = 80
-const ROLL_SPEED = 100
-const ACCELERATION = 500
-const FRICTION = 500
-const ROLL_FRICTION = 300
+export var MAX_SPEED = 80
+export var ROLL_SPEED = 100
+export var ACCELERATION = 500
+export var ROLL_ACCELERATION = 800
+export var FRICTION = 500
 
 enum PlayerState { MOVE, ROLL, ATTACK }
 
@@ -15,11 +15,14 @@ var state = PlayerState.MOVE
 onready var anim_player: AnimationPlayer = $AnimationPlayer
 onready var anim_tree: AnimationTree = $AnimationTree
 onready var anim_state = anim_tree.get("parameters/playback")
+onready var sword_hitbox: Area2D = $HitBoxPivot/SwordHitbox
+onready var roll_hitbox: Area2D = $HitBoxPivot/RollHitBox
 
 
 func _ready() -> void:
 	anim_tree.active = true
-
+	sword_hitbox.knockback_vector = roll_vector
+	roll_hitbox.knockback_vector = roll_vector
 
 func _physics_process(delta: float) -> void:
 	match state:
@@ -52,8 +55,10 @@ func move_state(delta: float) -> void:
 		anim_tree.set("parameters/Attack/blend_position", input_vector)
 		anim_tree.set("parameters/Roll/blend_position", input_vector)
 		anim_state.travel("Run")
-		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 		roll_vector = input_vector
+		sword_hitbox.knockback_vector = input_vector
+		roll_hitbox.knockback_vector = input_vector
+		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 
 	else:
 		anim_state.travel("Idle")
@@ -64,7 +69,7 @@ func move_state(delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		state = PlayerState.ATTACK
 
-	if Input.is_action_just_pressed("dodge_roll"):
+	if Input.is_action_just_pressed("roll"):
 		state = PlayerState.ROLL
 
 
@@ -76,16 +81,22 @@ func attack_state(delta: float) -> void:
 
 func roll_state(delta: float) -> void:
 	anim_state.travel("Roll")
-	velocity = velocity.move_toward(roll_vector * ROLL_SPEED, ROLL_FRICTION * delta)
+	velocity = velocity.move_toward(roll_vector * ROLL_SPEED, ROLL_ACCELERATION * delta)
 	move()
 
 
 func attack_anim_finished() -> void:
-	state = PlayerState.MOVE
+	if Input.is_action_pressed("roll"):
+		state = PlayerState.ROLL
+	else:
+		state = PlayerState.MOVE
 
 
 func roll_anim_finished() -> void:
-	state = PlayerState.MOVE
+	if Input.is_action_pressed("attack"):
+		state = PlayerState.ATTACK
+	else:
+		state = PlayerState.MOVE
 
 
 func move() -> void:

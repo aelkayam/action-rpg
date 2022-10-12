@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://World/Grass.png" type="Texture" id=1]
 [ext_resource path="res://World/Grass.gd" type="Script" id=2]
-[ext_resource path="res://Hitboxes and HurtBoxes/HurtBox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Overlap/HurtBox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Stats.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6.5 )
@@ -32,6 +33,10 @@ modulate = Color( 0.231373, 0.921569, 0.133333, 1 )
 position = Vector2( 8, 9 )
 shape = SubResource( 2 )
 
+[node name="Stats" parent="." instance=ExtResource( 4 )]
+max_health = 2
+
 [connection signal="area_entered" from="HurtBox" to="." method="_on_area_entered"]
+[connection signal="no_health" from="Stats" to="." method="_on_no_health"]
 
 [editable path="HurtBox"]

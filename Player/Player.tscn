@@ -1,8 +1,10 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.png" type="Texture" id=2]
-[ext_resource path="res://Hitboxes and HurtBoxes/Hitbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Overlap/Hitbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Player/SwordHitbox.gd" type="Script" id=4]
+[ext_resource path="res://Player/RollHitbox.gd" type="Script" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.0
@@ -743,18 +745,22 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=49]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=51]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=52]
+
 [sub_resource type="AnimationNodeStateMachine" id=17]
 states/Attack/node = SubResource( 35 )
-states/Attack/position = Vector2( 628, 266 )
+states/Attack/position = Vector2( 605, 266 )
 states/Idle/node = SubResource( 16 )
-states/Idle/position = Vector2( 628, 167 )
+states/Idle/position = Vector2( 721, 167 )
 states/Roll/node = SubResource( 47 )
-states/Roll/position = Vector2( 628, 66 )
+states/Roll/position = Vector2( 605, 66 )
 states/Run/node = SubResource( 23 )
-states/Run/position = Vector2( 818, 167 )
-transitions = [ "Idle", "Run", SubResource( 24 ), "Run", "Idle", SubResource( 25 ), "Idle", "Attack", SubResource( 36 ), "Attack", "Idle", SubResource( 37 ), "Idle", "Roll", SubResource( 48 ), "Roll", "Idle", SubResource( 49 ) ]
+states/Run/position = Vector2( 889, 167 )
+transitions = [ "Idle", "Run", SubResource( 24 ), "Run", "Idle", SubResource( 25 ), "Idle", "Attack", SubResource( 36 ), "Attack", "Idle", SubResource( 37 ), "Idle", "Roll", SubResource( 48 ), "Roll", "Idle", SubResource( 49 ), "Roll", "Attack", SubResource( 51 ), "Attack", "Roll", SubResource( 52 ) ]
 start_node = "Idle"
-graph_offset = Vector2( 122.469, -10 )
+graph_offset = Vector2( 114.469, 28 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=18]
 
@@ -812,6 +818,8 @@ rotation = -1.5708
 
 [node name="SwordHitbox" parent="HitBoxPivot" instance=ExtResource( 3 )]
 collision_mask = 8
+script = ExtResource( 4 )
+damage = 2
 
 [node name="CollisionShape2D" parent="HitBoxPivot/SwordHitbox" index="0"]
 modulate = Color( 0.72549, 0.913725, 0.211765, 1 )
@@ -823,6 +831,7 @@ disabled = true
 
 [node name="RollHitBox" parent="HitBoxPivot" instance=ExtResource( 3 )]
 collision_mask = 8
+script = ExtResource( 5 )
 
 [node name="CollisionShape2D" parent="HitBoxPivot/RollHitBox" index="0"]
 modulate = Color( 0.215686, 0.176471, 0.933333, 1 )
