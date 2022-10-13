@@ -580,10 +580,10 @@ position = Vector2( 92, 56 )
 position = Vector2( 176, 78 )
 
 [node name="Bat3" parent="Objects/Bats" instance=ExtResource( 7 )]
-position = Vector2( 152, 148 )
+position = Vector2( 285, 21 )
 
 [node name="Bat4" parent="Objects/Bats" instance=ExtResource( 7 )]
-position = Vector2( 208, 121 )
+position = Vector2( 208, 206 )
 
 [node name="Bat5" parent="Objects/Bats" instance=ExtResource( 7 )]
 position = Vector2( 280, 112 )

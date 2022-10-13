@@ -8,21 +8,30 @@ export var FRICTION = 500
 
 enum PlayerState { MOVE, ROLL, ATTACK }
 
-var velocity: Vector2 = Vector2.ZERO
-var roll_vector = Vector2.DOWN
 var state = PlayerState.MOVE
+var velocity: Vector2 = Vector2.ZERO
+var roll_vector := Vector2.DOWN
+var stats := PlayerStats
 
 onready var anim_player: AnimationPlayer = $AnimationPlayer
 onready var anim_tree: AnimationTree = $AnimationTree
 onready var anim_state = anim_tree.get("parameters/playback")
 onready var sword_hitbox: Area2D = $HitBoxPivot/SwordHitbox
 onready var roll_hitbox: Area2D = $HitBoxPivot/RollHitBox
+onready var hurt_box: Area2D = $HurtBox
+
+
+func _on_HurtBox_area_entered(area: Hitbox) -> void:
+	take_damage(area.damage)
+	hurt_box.start_invincibility(0.5)
+	hurt_box.create_hitEffect()
 
 
 func _ready() -> void:
 	anim_tree.active = true
 	sword_hitbox.knockback_vector = roll_vector
 	roll_hitbox.knockback_vector = roll_vector
+	stats.connect("no_health", self, "queue_free")
 
 func _physics_process(delta: float) -> void:
 	match state:
@@ -59,7 +68,6 @@ func move_state(delta: float) -> void:
 		sword_hitbox.knockback_vector = input_vector
 		roll_hitbox.knockback_vector = input_vector
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
-
 	else:
 		anim_state.travel("Idle")
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
@@ -101,3 +109,8 @@ func roll_anim_finished() -> void:
 
 func move() -> void:
 	velocity = move_and_slide(velocity)
+
+
+func take_damage(value: int) -> void:
+	stats.health -= value
+	print(stats.health)
