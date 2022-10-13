@@ -576,7 +576,7 @@ position = Vector2( 18, -3 )
 [node name="Bats" type="YSort" parent="Objects"]
 
 [node name="Bat" parent="Objects/Bats" instance=ExtResource( 7 )]
-position = Vector2( 92, 56 )
+position = Vector2( 3, 7 )
 
 [node name="Bat2" parent="Objects/Bats" instance=ExtResource( 7 )]
 position = Vector2( 176, 78 )
@@ -605,3 +605,7 @@ position = Vector2( 152, 136 )
 position = Vector2( 305, 128 )
 
 [node name="HealthUI" parent="." instance=ExtResource( 8 )]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 78.0
+margin_bottom = 14.0

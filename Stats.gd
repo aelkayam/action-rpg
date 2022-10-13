@@ -12,12 +12,12 @@ func _ready() -> void:
 	health = max_health
 
 func set_max_health(value: int) -> void:
-	max_health = value
+	max_health = max(value, 1)
 	self.health = min(health, max_health)
 	emit_signal("max_health_change", max_health)
 
 func set_health(value: int) -> void:
-	health = value
+	health = clamp(value, 0, max_health)
 	emit_signal("health_change", health)
 	
 	if(health <= 0):

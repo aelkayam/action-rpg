@@ -3,6 +3,7 @@ extends KinematicBody2D
 const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
 
 export var MAX_SPEED = 50
+export var WANDER_SPEED = 25
 export var ACCELERATION = 300
 export var FRICTION = 200
 export var KNOCKBACK_VELOCITY = 120
@@ -21,6 +22,8 @@ var state = states.WANDER
 
 
 func _ready() -> void:
+	var num_of_frames = animated_sprite.frames.get_frame_count("fly")
+	animated_sprite.frame = randi() % num_of_frames
 	animated_sprite.playing = true
 
 
@@ -57,9 +60,8 @@ func stop_moving(delta: float) -> void:
 
 
 func move_aimlessly(delta: float) -> void:
-	velocity = velocity.move_toward(
-		Vector2(rand_range(-1, 1), rand_range(-1, 1)) * MAX_SPEED, ACCELERATION * delta
-	)
+	var rand_direction = Vector2(rand_range(-1, 1),rand_range(-1, 1))
+	velocity = velocity.move_toward(rand_direction * WANDER_SPEED, ACCELERATION * delta)
 
 
 func move_toward_player(delta: float) -> void:
@@ -84,6 +86,7 @@ func take_damage(area: Hitbox) -> void:
 	knockback = knockback.move_toward(
 		area.knockback_vector * KNOCKBACK_VELOCITY, KNOCKBACK_ACCELERATION
 	)
+
 
 func die() -> void:
 	var deathEffect = EnemyDeathEffect.instance()
