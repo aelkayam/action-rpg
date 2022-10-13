@@ -113,4 +113,4 @@ func move() -> void:
 
 func take_damage(value: int) -> void:
 	stats.health -= value
-	print(stats.health)
+	print("player health: ", stats.health)
