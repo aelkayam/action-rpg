@@ -33,6 +33,7 @@ func _ready() -> void:
 	roll_hitbox.knockback_vector = roll_vector
 	stats.connect("no_health", self, "queue_free")
 
+
 func _physics_process(delta: float) -> void:
 	match state:
 		PlayerState.MOVE:
@@ -52,8 +53,8 @@ func move_state(delta: float) -> void:
 		- Input.get_action_strength("move_left")
 	)
 	input_vector.y = (
-		Input.get_action_strength("move_down") 
-		- Input.get_action_strength("move_up")
+		Input.get_action_strength("move_down")
+		 - Input.get_action_strength("move_up")
 	)
 
 	input_vector = input_vector.normalized()
@@ -64,9 +65,12 @@ func move_state(delta: float) -> void:
 		anim_tree.set("parameters/Attack/blend_position", input_vector)
 		anim_tree.set("parameters/Roll/blend_position", input_vector)
 		anim_state.travel("Run")
+
+#		update roll and hitboxes vectors to the direction of movement
 		roll_vector = input_vector
 		sword_hitbox.knockback_vector = input_vector
 		roll_hitbox.knockback_vector = input_vector
+
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 	else:
 		anim_state.travel("Idle")

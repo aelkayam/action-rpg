@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 const EnemyDeathEffect = preload("res://Effects/EnemyDeathEffect.tscn")
+const SOFT_COLLISION_PUSH = 300
 
 export var MAX_SPEED = 50
 export var WANDER_SPEED = 25
@@ -15,6 +16,7 @@ onready var animated_sprite: AnimatedSprite = $AnimatedSprite
 onready var stats: Node = $Stats
 onready var player_detection_zone: Area2D = $PlayerDetectionZone
 onready var hurt_box: Area2D = $HurtBox
+onready var soft_collision: Area2D = $SoftCollision
 
 var knockback := Vector2.ZERO
 var velocity := Vector2.ZERO
@@ -51,7 +53,11 @@ func _physics_process(delta: float) -> void:
 		states.CHASE:
 			move_toward_player(delta)
 
+#	flip sprite and add push vector to avoid overlapping another bat
 	animated_sprite.flip_h = velocity.x < 0
+	if soft_collision.is_Colliding():
+		velocity += soft_collision.get_push_vector() * delta * SOFT_COLLISION_PUSH
+
 	velocity = move_and_slide(velocity)
 
 
@@ -60,7 +66,7 @@ func stop_moving(delta: float) -> void:
 
 
 func move_aimlessly(delta: float) -> void:
-	var rand_direction = Vector2(rand_range(-1, 1),rand_range(-1, 1))
+	var rand_direction = Vector2(rand_range(-1, 1), rand_range(-1, 1))
 	velocity = velocity.move_toward(rand_direction * WANDER_SPEED, ACCELERATION * delta)
 
 
