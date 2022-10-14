@@ -28,6 +28,7 @@ func _on_HurtBox_area_entered(area: Hitbox) -> void:
 
 
 func _ready() -> void:
+	randomize()
 	anim_tree.active = true
 	sword_hitbox.knockback_vector = roll_vector
 	roll_hitbox.knockback_vector = roll_vector
