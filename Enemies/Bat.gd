@@ -55,8 +55,7 @@ func _physics_process(delta: float) -> void:
 
 #	flip sprite and add push vector to avoid overlapping another bat
 	animated_sprite.flip_h = velocity.x < 0
-	if soft_collision.is_Colliding():
-		velocity += soft_collision.get_push_vector() * delta * SOFT_COLLISION_PUSH
+	velocity += soft_collision.get_push_vector() * delta * SOFT_COLLISION_PUSH
 
 	velocity = move_and_slide(velocity)
 

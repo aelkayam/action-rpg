@@ -917,6 +917,8 @@ collision_layer = 4
 position = Vector2( 0, -4 )
 shape = SubResource( 53 )
 
+[node name="CameraFollower" type="RemoteTransform2D" parent="."]
+
 [connection signal="area_entered" from="HurtBox" to="." method="_on_HurtBox_area_entered"]
 
 [editable path="HitBoxPivot/SwordHitbox"]
