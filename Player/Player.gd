@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+const PlayerHurtSound = preload("res://Player/PlayerHurtSound.tscn")
+
 export var MAX_SPEED = 80
 export var ROLL_SPEED = 100
 export var ACCELERATION = 500
@@ -14,6 +16,7 @@ var roll_vector := Vector2.DOWN
 var stats := PlayerStats
 
 onready var anim_player: AnimationPlayer = $AnimationPlayer
+onready var blink_anima_player: AnimationPlayer = $BlinkAnimationPlayer
 onready var anim_tree: AnimationTree = $AnimationTree
 onready var anim_state = anim_tree.get("parameters/playback")
 onready var sword_hitbox: Area2D = $HitBoxPivot/SwordHitbox
@@ -23,8 +26,19 @@ onready var hurt_box: Area2D = $HurtBox
 
 func _on_HurtBox_area_entered(area: Hitbox) -> void:
 	take_damage(area.damage)
-	hurt_box.start_invincibility(0.5)
-	hurt_box.create_hitEffect()
+	hurt_box.start_invincibility(0.6)
+
+	# play hit effect also when player is dead
+	var playerHurtSound = PlayerHurtSound.instance()
+	get_parent().add_child(playerHurtSound)
+
+
+func _on_HurtBox_invincibility_ended() -> void:
+	blink_anima_player.play("RESET")
+
+
+func _on_HurtBox_invincibility_started() -> void:
+	blink_anima_player.play("start")
 
 
 func _ready() -> void:
@@ -32,6 +46,7 @@ func _ready() -> void:
 	anim_tree.active = true
 	sword_hitbox.knockback_vector = roll_vector
 	roll_hitbox.knockback_vector = roll_vector
+# warning-ignore:return_value_discarded
 	stats.connect("no_health", self, "queue_free")
 
 
@@ -53,10 +68,7 @@ func move_state(delta: float) -> void:
 		Input.get_action_strength("move_right")
 		- Input.get_action_strength("move_left")
 	)
-	input_vector.y = (
-		Input.get_action_strength("move_down")
-		 - Input.get_action_strength("move_up")
-	)
+	input_vector.y = (Input.get_action_strength("move_down") - Input.get_action_strength("move_up"))
 
 	input_vector = input_vector.normalized()
 

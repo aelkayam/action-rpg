@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Enemies/Bat.png" type="Texture" id=1]
 [ext_resource path="res://Shadows/SmallShadow.png" type="Texture" id=2]
@@ -9,6 +9,12 @@
 [ext_resource path="res://Overlap/Hitbox.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Enemies/WanderController.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Player/PlayerBlink.gdshader" type="Shader" id=10]
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = ExtResource( 10 )
+shader_param/active = false
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -41,6 +47,38 @@ animations = [ {
 [sub_resource type="CircleShape2D" id=7]
 radius = 4.0
 
+[sub_resource type="Animation" id=12]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:material:shader_param/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "start"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:material:shader_param/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [sub_resource type="CapsuleShape2D" id=8]
 radius = 7.0
 height = 4.0
@@ -59,6 +97,7 @@ script = ExtResource( 4 )
 max_health = 3
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = SubResource( 11 )
 frames = SubResource( 6 )
 animation = "fly"
 frame = 2
@@ -70,6 +109,10 @@ texture = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource( 7 )
+
+[node name="BlinkAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 12 )
+anims/start = SubResource( 13 )
 
 [node name="WanderController" parent="." instance=ExtResource( 9 )]
 
@@ -100,6 +143,8 @@ shape = SubResource( 10 )
 [connection signal="no_health" from="Stats" to="." method="_on_no_health"]
 [connection signal="timer_zero" from="WanderController" to="." method="_on_WanderController_timer_zero"]
 [connection signal="area_entered" from="HurtBox" to="." method="_on_area_entered"]
+[connection signal="invincibility_ended" from="HurtBox" to="." method="_on_HurtBox_invincibility_ended"]
+[connection signal="invincibility_started" from="HurtBox" to="." method="_on_HurtBox_invincibility_started"]
 
 [editable path="HurtBox"]
 [editable path="Hitbox"]

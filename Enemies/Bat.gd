@@ -20,6 +20,7 @@ onready var player_detection_zone: Area2D = $PlayerDetectionZone
 onready var hurt_box: Area2D = $HurtBox
 onready var soft_collision: Area2D = $SoftCollision
 onready var wander_controller: Node2D = $WanderController
+onready var blink_animation_player: AnimationPlayer = $BlinkAnimationPlayer
 
 var knockback := Vector2.ZERO
 var velocity := Vector2.ZERO
@@ -43,6 +44,14 @@ func _on_no_health() -> void:
 
 func _on_WanderController_timer_zero() -> void:
 	switch_between_states()
+
+
+func _on_HurtBox_invincibility_started() -> void:
+	blink_animation_player.play("start")
+
+
+func _on_HurtBox_invincibility_ended() -> void:
+	blink_animation_player.play("RESET")
 
 
 func _physics_process(delta: float) -> void:
@@ -72,7 +81,7 @@ func stop_moving(delta: float) -> void:
 
 func move_aimlessly(delta: float) -> void:
 	accelerate_towards(wander_controller.target_position, WANDER_SPEED, WANDER_ACCELERATION, delta)
-	
+
 	# to prevent the bat wiggle when it arrives the target:
 	if global_position.distance_to(wander_controller.target_position) <= WANDER_INTOLERANCE:
 		switch_between_states()
@@ -102,11 +111,11 @@ func seek_player() -> void:
 		state = states.CHASE
 
 
-# damage effect and invincibility trigger
+# damage effect and trigger invincibility
 func take_damage(area: Hitbox) -> void:
 	stats.health -= area.damage
 	hurt_box.create_hitEffect()
-	hurt_box.start_invincibility(0.2)
+	hurt_box.start_invincibility(0.3)
 	knockback = knockback.move_toward(
 		area.knockback_vector * KNOCKBACK_VELOCITY, KNOCKBACK_ACCELERATION
 	)
