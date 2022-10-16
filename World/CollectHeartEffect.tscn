@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://World/CollectHeartEffect.gd" type="Script" id=1]
+[ext_resource path="res://Music and Sounds/Menu Select.wav" type="AudioStream" id=2]
+
+[node name="CollectHeartEffect" type="AudioStreamPlayer"]
+stream = ExtResource( 2 )
+autoplay = true
+script = ExtResource( 1 )
+
+[connection signal="finished" from="." to="." method="_on_finished"]
