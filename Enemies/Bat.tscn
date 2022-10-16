@@ -142,7 +142,7 @@ shape = SubResource( 10 )
 
 [connection signal="no_health" from="Stats" to="." method="_on_no_health"]
 [connection signal="timer_zero" from="WanderController" to="." method="_on_WanderController_timer_zero"]
-[connection signal="area_entered" from="HurtBox" to="." method="_on_area_entered"]
+[connection signal="area_entered" from="HurtBox" to="." method="_on_HurtBox_area_entered"]
 [connection signal="invincibility_ended" from="HurtBox" to="." method="_on_HurtBox_invincibility_ended"]
 [connection signal="invincibility_started" from="HurtBox" to="." method="_on_HurtBox_invincibility_started"]
 

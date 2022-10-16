@@ -34,7 +34,7 @@ func _ready() -> void:
 	state = pick_random_state([states.IDLE, states.WANDER])
 
 
-func _on_area_entered(area: Hitbox) -> void:
+func _on_HurtBox_area_entered(area: Hitbox) -> void:
 	take_damage(area)
 
 

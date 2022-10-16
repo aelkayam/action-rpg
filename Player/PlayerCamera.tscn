@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Player/PlayerCamera.gd" type="Script" id=1]
+
+[node name="PlayerCamera" type="Camera2D"]
+position = Vector2( 160, 90 )
+current = true
+zoom = Vector2( 0.8, 0.8 )
+limit_smoothed = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Limits" type="Node" parent="."]
+
+[node name="TopLeftPosition" type="Position2D" parent="Limits"]
+
+[node name="BottomRightPosition" type="Position2D" parent="Limits"]
+position = Vector2( 320, 180 )
